@@ -1,23 +1,25 @@
 'use client';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Typography, Breadcrumbs, Link } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 // Add some icons for the drawer (you'll need to install @mui/icons-material)
-import { Dashboard as DashboardIcon, 
+import { BugReport as BugIcon, 
          People as PeopleIcon, 
          Settings as SettingsIcon } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 // Sample data
 const rows = [
-  { id: 1, Vulnerability: 'vulnerability 1', Severity: 'Severity 1', Info: 'Info 1' },
-  { id: 2, Vulnerability: 'vulnerability 2', Severity: 'Severity 2', Info: 'Info 2' },
-  { id: 3, Vulnerability: 'vulnerability 3', Severity: 'Severity 3', Info: 'Info 3' },
+  { id: 1, Vulnerability: 'vulnerability 1', Severity: 'Severity 1', EPSS: 'EPSS 1', Info: 'Info 1' },
+  { id: 2, Vulnerability: 'vulnerability 2', Severity: 'Severity 2', EPSS: 'EPSS 2', Info: 'Info 2' },
+  { id: 3, Vulnerability: 'vulnerability 3', Severity: 'Severity 3', EPSS: 'EPSS 3', Info: 'Info 3' },
 ];
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
   { field: 'Vulnerability', headerName: 'Vulnerability', width: 130 },
   { field: 'Severity', headerName: 'Severity', width: 130 },
+  { field: 'EPSS', headerName: 'EPSS', width: 130 },
   { field: 'Info', headerName: 'Info', width: 90 },
   {
     field: 'actions',
@@ -64,9 +66,9 @@ export default function Dashboard() {
         <List sx={{ marginTop: '64px' }}>
           <ListItemButton>
             <ListItemIcon>
-              <DashboardIcon />
+              <BugIcon />
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Vulnerabilities" />
           </ListItemButton>
           <ListItemButton>
             <ListItemIcon>
@@ -88,11 +90,51 @@ export default function Dashboard() {
         p: 3,
         height: '100vh', 
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        justifyContent: 'center',
         backgroundColor: '#f5f5f5'
       }}>
-        <div style={{ height: 600, width: '95%' }}>  {/* Changed height from 400 to 600 and width from 80% to 95% */}
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            mb: 2,
+            color: 'black'
+          }}
+        >
+          Vulnerability Management
+        </Typography>
+        
+        <Breadcrumbs 
+          separator={<NavigateNextIcon fontSize="small" />}
+          sx={{ mb: 3 }}
+        >
+          <Link 
+            underline="hover" 
+            color="inherit" 
+            href="#" 
+            sx={{ '&:hover': { cursor: 'pointer' } }}
+          >
+            Project
+          </Link>
+          <Link 
+            underline="hover" 
+            color="inherit" 
+            href="#" 
+            sx={{ '&:hover': { cursor: 'pointer' } }}
+          >
+            Repository
+          </Link>
+          <Link 
+            underline="hover" 
+            color="inherit" 
+            href="#" 
+            sx={{ '&:hover': { cursor: 'pointer' } }}
+          >
+            main
+          </Link>
+        </Breadcrumbs>
+        
+        <div style={{ height: 600, width: '95%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
