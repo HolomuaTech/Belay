@@ -3,16 +3,30 @@
 import { Box, Typography, Breadcrumbs, Link } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SideMenu from '@/components/SideMenu';
-import { Pie } from 'react-chartjs-2';
+import { Pie, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
 } from 'chart.js';
 
 // Register ChartJS components
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title
+);
 
 const Dashboard = () => {
   // Sample data for the pie chart
@@ -30,6 +44,19 @@ const Dashboard = () => {
     ],
   };
 
+  // Add time series data
+  const timeSeriesData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [
+      {
+        label: 'Number of Releases',
+        data: [12, 19, 15, 16, 8, 22],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <SideMenu />
@@ -37,7 +64,7 @@ const Dashboard = () => {
       <Box sx={{ 
         flexGrow: 1, 
         p: 3,
-        height: '100vh', 
+        height: '200vh', 
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -79,6 +106,19 @@ const Dashboard = () => {
         }}>
           <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Enterprise Wide Vulnerabilities</Typography>
           <Pie data={chartData} />
+        </Box>
+        
+        {/* Add the line chart box */}
+        <Box sx={{
+          backgroundColor: 'white',
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 1,
+          width: '800px',
+          mt: 3
+        }}>
+          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Releases over Time</Typography>
+          <Line data={timeSeriesData} />
         </Box>
         
       </Box>

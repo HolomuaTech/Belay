@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Typography, Breadcrumbs, Link, Modal, TextField, Select, MenuItem, FormControl, InputLabel, Button, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Box, Typography, Breadcrumbs, Link, Modal, TextField, Select, MenuItem, FormControl, InputLabel, Button, Checkbox, FormControlLabel, FormGroup, Badge } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
@@ -31,32 +31,72 @@ const Release = () => {
   const events = [
     {
       title: 'Release 1.0',
-      start: new Date(2024, 10, 7),
-      end: new Date(2024, 10, 7),
+      start: new Date(2024, 10, 7, 9, 0),
+      end: new Date(2024, 10, 7, 13, 0),
+      details: 'Major platform upgrade including new UI components and performance improvements',
+      startTime: '09:00',
+      endTime: '13:00',
+      assignedTeam: 'Platform Team',
+      priority: 'High',
+      status: 'Scheduled'
     },
     {
       title: 'Release 1.1',
-      start: new Date(2024, 10, 14),
-      end: new Date(2024, 10, 14),
+      start: new Date(2024, 10, 14, 14, 0),
+      end: new Date(2024, 10, 14, 17, 0),
+      details: 'Security patches and bug fixes for reported issues',
+      startTime: '14:00',
+      endTime: '17:00',
+      assignedTeam: 'Security Team',
+      priority: 'Critical',
+      status: 'Planning'
     },
     {
       title: 'Release 1.2',
-      start: new Date(2024, 10, 21),
-      end: new Date(2024, 10, 21),
+      start: new Date(2024, 10, 21, 10, 0),
+      end: new Date(2024, 10, 21, 15, 0),
+      details: 'Feature updates for analytics dashboard and reporting tools',
+      startTime: '10:00',
+      endTime: '15:00',
+      assignedTeam: 'Analytics Team',
+      priority: 'Medium',
+      status: 'In Review'
     },
     {
       title: 'Release 2.0',
-      start: new Date(2024, 10, 28),  // Note: Month is 10 for November (0-based)
-      end: new Date(2024, 10, 28),
+      start: new Date(2024, 10, 28, 8, 0),
+      end: new Date(2024, 10, 28, 16, 0),
+      details: 'Major version release with new API endpoints and database migration',
+      startTime: '08:00',
+      endTime: '16:00',
+      assignedTeam: 'Core Team',
+      priority: 'High',
+      status: 'Draft'
     },
   ];
 
   // Add sample attendees
   const attendees = [
-    { name: 'John Doe', email: 'john@example.com' },
-    { name: 'Jane Smith', email: 'jane@example.com' },
-    { name: 'Bob Wilson', email: 'bob@example.com' },
+    { 
+      name: 'John Doe', 
+      isAuthorized: true,
+      checked: false
+    },
+    { 
+      name: 'Jane Smith', 
+      checked: false 
+    },
+    { 
+      name: 'Bob Wilson', 
+      checked: false 
+    },
   ];
+
+  // Add state to manage checkbox values
+  const [checkedAttendees, setCheckedAttendees] = useState(attendees.map(a => ({
+    ...a,
+    checked: false
+  })));
 
   const handleEventClick = (event: any) => {
     setSelectedEvent(event);
@@ -66,6 +106,12 @@ const Release = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedEvent(null);
+  };
+
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    setCheckedAttendees(prev => prev.map((attendee, i) => 
+      i === index ? { ...attendee, checked } : attendee
+    ));
   };
 
   return (
@@ -121,7 +167,10 @@ const Release = () => {
             events={events}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: '500px' }}
+            style={{ 
+              height: '500px',
+              color: 'black'
+            }}
             onSelectEvent={handleEventClick}
           />
         </Box>
@@ -130,6 +179,14 @@ const Release = () => {
           open={isModalOpen}
           onClose={handleCloseModal}
           aria-labelledby="event-modal-title"
+          sx={{
+            '& .MuiTypography-root': {
+              color: 'black',
+            },
+            '& .MuiDialogContent-root': {
+              color: 'black',
+            }
+          }}
         >
           <Box sx={{
             position: 'absolute',
@@ -148,6 +205,8 @@ const Release = () => {
 
             <Typography variant="subtitle1" sx={{ mb: 2 }}>
               Date: {selectedEvent?.start.toLocaleDateString()}
+              <br />
+              Maintenance Window:
             </Typography>
 
             <FormControl fullWidth sx={{ mb: 2 }}>
@@ -183,17 +242,32 @@ const Release = () => {
               multiline
               rows={4}
               label="Details"
+              value={selectedEvent?.details || ''}
               sx={{ mb: 2 }}
             />
 
             <Typography variant="subtitle1" sx={{ mb: 1 }}>Attendees:</Typography>
             <FormGroup sx={{ mb: 2 }}>
-              {attendees.map((attendee) => (
-                <FormControlLabel
-                  key={attendee.email}
-                  control={<Checkbox />}
-                  label={`${attendee.name} (${attendee.email})`}
-                />
+              {checkedAttendees.map((attendee, index) => (
+                <div key={index} style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px',
+                  width: '90%'
+                }}>
+                  <Checkbox
+                    checked={attendee.checked}
+                    onChange={(e) => handleCheckboxChange(index, e.target.checked)}
+                  />
+                  <Typography sx={{ flexGrow: 1 }}>{attendee.name}</Typography>
+                  {attendee.isAuthorized && (
+                    <Badge 
+                      badgeContent="Authorized" 
+                      color="primary"
+                      sx={{ marginLeft: 'auto' }}
+                    />
+                  )}
+                </div>
               ))}
             </FormGroup>
 
