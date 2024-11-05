@@ -1,12 +1,17 @@
 'use client';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Typography, Breadcrumbs, Link, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Switch, styled, Button } from '@mui/material';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Typography, Breadcrumbs, Link, Select, MenuItem, FormControl, InputLabel, FormControlLabel, Switch, styled, Button, Tooltip } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SideMenu from '@/components/SideMenu';
-import { useRef, useState } from 'react';
+import { useRef, useState, forwardRef } from 'react';
 
 
 
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+
+const TooltipButton = forwardRef<HTMLButtonElement, any>((props, ref) => (
+  <Button {...props} ref={ref} />
+));
+TooltipButton.displayName = 'TooltipButton';
 
 export default function Users() {
   const AuthSwitch = styled(Switch)(({ theme }) => ({
@@ -92,16 +97,18 @@ export default function Users() {
       headerName: 'Action', 
       width: 130,
       renderCell: (params) => (
-        <Button 
-          variant="contained" 
-          size="small"
-          sx={{ backgroundColor: 'black', '&:hover': { backgroundColor: '#333' } }}
-          onClick={() => {
-            console.log('Delete clicked for ID:', params.row.id);
-          }}
-        >
-          Delete User
-        </Button>
+        <Tooltip title="Delete this user">
+          <Button 
+            variant="contained" 
+            size="small"
+            sx={{ backgroundColor: 'black', '&:hover': { backgroundColor: '#333' } }}
+            onClick={() => {
+              console.log('Delete clicked for ID:', params.row.id);
+            }}
+          >
+            Delete User
+          </Button>
+        </Tooltip>
       ),
     }
   ];
@@ -117,13 +124,13 @@ export default function Users() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        backgroundColor: '#f5f5f5'
+        backgroundColor: 'background.default'
       }}>
         <Typography 
           variant="h4" 
           sx={{ 
             mb: 2,
-            color: 'black'
+            color: 'text.primary'
           }}
         >
           User Management
@@ -149,15 +156,12 @@ export default function Users() {
           >
             Repository
           </Link>
-          
         </Breadcrumbs>
-        
-        
         
         <div style={{ height: 600, width: '95%' }}>
             <Box 
                 sx={{ 
-                    backgroundColor: 'white',
+                    backgroundColor: 'background.paper',
                     p: 2,
                     mb: 2,
                     borderRadius: 1,
@@ -165,15 +169,20 @@ export default function Users() {
                 }}
             >
                 <Typography 
-                    variant="body1" 
-                    sx={{ color: 'black' }}
+                    variant="h6" 
+                    sx={{ color: 'text.primary', mb: 2 }}
                 >
-                    <h4>Description:</h4> <br /> 
-                    <p>Add, Remove or Change users ability to deploy to production.</p>
+                    Description:
+                </Typography>
+                <Typography 
+                    variant="body1" 
+                    sx={{ color: 'text.primary' }}
+                >
+                    Add, Remove or Change users ability to deploy to production.
                 </Typography>
             </Box>
             <Box sx={{ 
-                backgroundColor: 'white',
+                backgroundColor: 'background.paper',
                 p: 2,
                 borderRadius: 1,
                 boxShadow: 1
@@ -203,7 +212,27 @@ export default function Users() {
                     pageSizeOptions={[5, 10]}
                     disableRowSelectionOnClick
                     sx={{ 
-                        backgroundColor: 'white',
+                        backgroundColor: 'background.paper',
+                        '& .MuiDataGrid-cell': {
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-columnHeaders': {
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-virtualScroller': {
+                            backgroundColor: 'background.paper'
+                        },
+                        '& .MuiTablePagination-root': {
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                            backgroundColor: 'action.hover'
+                        },
                         border: 'none'
                     }}
                 />

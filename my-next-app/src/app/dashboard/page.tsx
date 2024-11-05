@@ -65,7 +65,7 @@ const Dashboard = () => {
     datasets: [
       {
         label: 'Number of Users',
-        data: [45, 32, 28],
+        data: [2, 4, 2],
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
         borderColor: 'rgb(53, 162, 235)',
         borderWidth: 1,
@@ -146,7 +146,7 @@ const Dashboard = () => {
           width: '800px',
           mt: 3
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Users by Organization</Typography>
+          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Authorized Users by Team</Typography>
           <Bar data={organizationData} />
         </Box>
         

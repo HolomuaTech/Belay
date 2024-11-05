@@ -158,7 +158,28 @@ const Release = () => {
             Team
           </Link>
         </Breadcrumbs>
-        
+        <Box 
+            sx={{ 
+                backgroundColor: 'background.paper',
+                p: 2,
+                mb: 2,
+                borderRadius: 1,
+                boxShadow: 1
+            }}
+        >
+            <Typography 
+                variant="h6" 
+                sx={{ color: 'text.primary', mb: 2 }}
+            >
+                Description:
+            </Typography>
+            <Typography 
+                variant="body1" 
+                sx={{ color: 'text.primary' }}
+            >
+                A calendar of scheduled releases.  Click on the event to view release/change management details.  To add approved users that can release, click on the "Users" menu item.
+            </Typography>
+        </Box>
         <Box sx={{
           backgroundColor: 'white',
           p: 3,
