@@ -3,7 +3,7 @@
 import { Box, Typography, Breadcrumbs, Link } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SideMenu from '@/components/SideMenu';
-import { Pie, Line } from 'react-chartjs-2';
+import { Pie, Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -14,6 +14,7 @@ import {
   PointElement,
   LineElement,
   Title,
+  BarElement,
 } from 'chart.js';
 
 // Register ChartJS components
@@ -25,7 +26,8 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Title
+  Title,
+  BarElement
 );
 
 const Dashboard = () => {
@@ -53,6 +55,20 @@ const Dashboard = () => {
         data: [12, 19, 15, 16, 8, 22],
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
+      },
+    ],
+  };
+
+  // Add bar chart data
+  const organizationData = {
+    labels: ['Platform Ops', 'Dev Ops', 'Net Ops'],
+    datasets: [
+      {
+        label: 'Number of Users',
+        data: [45, 32, 28],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        borderColor: 'rgb(53, 162, 235)',
+        borderWidth: 1,
       },
     ],
   };
@@ -119,6 +135,19 @@ const Dashboard = () => {
         }}>
           <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Releases over Time</Typography>
           <Line data={timeSeriesData} />
+        </Box>
+        
+        {/* Add the bar chart box */}
+        <Box sx={{
+          backgroundColor: 'white',
+          p: 3,
+          borderRadius: 2,
+          boxShadow: 1,
+          width: '800px',
+          mt: 3
+        }}>
+          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Users by Organization</Typography>
+          <Bar data={organizationData} />
         </Box>
         
       </Box>

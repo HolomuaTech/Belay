@@ -149,7 +149,14 @@ const Release = () => {
           >
             Enterprise
           </Link>
-          
+          <Link 
+            underline="hover" 
+            color="inherit" 
+            href="#" 
+            sx={{ '&:hover': { cursor: 'pointer' } }}
+          >
+            Team
+          </Link>
         </Breadcrumbs>
         
         <Box sx={{
@@ -157,7 +164,7 @@ const Release = () => {
           p: 3,
           borderRadius: 2,
           boxShadow: 1,
-          width: '90%',
+          width: '100%',
           mt: 3,
           height: '600px'  // Added fixed height for the calendar
         }}>
