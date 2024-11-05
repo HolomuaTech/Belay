@@ -13,6 +13,7 @@ import {
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTheme } from './ThemeContext';
+import Image from 'next/image';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -138,11 +139,26 @@ const SideMenu = () => {
         },
       }}
     >
-      <DrawerHeader>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: open ? 'row' : 'column',
+        alignItems: 'center',
+        justifyContent: open ? 'space-between' : 'center',
+        pt: 2,
+        pb: 1,
+        px: 1
+      }}>
+        <Image
+          src="/images/Guardian.png"
+          alt="Guardian Logo"
+          width={open ? 150 : 40}
+          height={90}
+          style={{ objectFit: 'contain' }}
+        />
         <IconButton onClick={handleDrawerToggle}>
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
-      </DrawerHeader>
+      </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <Box sx={{ flexGrow: 1 }}>
