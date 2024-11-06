@@ -80,6 +80,36 @@ const Dashboard = () => {
     ],
   };
 
+  const leadTimeData = {
+    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    datasets: [{
+      label: 'Lead Time (hours)',
+      data: [24, 18, 32, 16],
+      borderColor: 'rgb(153, 102, 255)',
+      tension: 0.1,
+    }]
+  };
+
+  const mttrData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    datasets: [{
+      label: 'MTTR (hours)',
+      data: [4.5, 3.2, 2.8, 2.1, 1.9],
+      borderColor: 'rgb(255, 159, 64)',
+      tension: 0.1,
+    }]
+  };
+
+  const changeFailureData = {
+    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+    datasets: [{
+      label: 'Change Failure Rate (%)',
+      data: [15, 12, 8, 7],
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      borderColor: 'rgb(255, 99, 132)',
+    }]
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <SideMenu />
@@ -90,7 +120,7 @@ const Dashboard = () => {
         height: '200vh', 
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
         backgroundColor: 'background.default'
       }}>
         <Typography 
@@ -118,45 +148,90 @@ const Dashboard = () => {
           
         </Breadcrumbs>
         
-        {/* Add the chart box */}
+        {/* Grid container for charts */}
         <Box sx={{
-          backgroundColor: 'background.paper',
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 1,
-          width: '400px',
-          mt: 3
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 3,
+          width: '100%',
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Enterprise Wide Vulnerabilities</Typography>
-          <Pie data={chartData} />
+          {/* Pie chart */}
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
+              Enterprise Wide Vulnerabilities
+            </Typography>
+            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Pie data={chartData} options={{ responsive: true, maintainAspectRatio: true }} />
+            </Box>
+          </Box>
+
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Lead Time for Changes</Typography>
+            <Line data={leadTimeData} options={{ responsive: true }} />
+          </Box>
+
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Mean Time to Recovery</Typography>
+            <Line data={mttrData} options={{ responsive: true }} />
+          </Box>
+
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Change Failure Rate</Typography>
+            <Bar data={changeFailureData} options={{ responsive: true }} />
+          </Box>
+          
+          {/* Line chart - spans 2 columns when space allows */}
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+            gridColumn: { md: 'span 2' }
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Releases over Time</Typography>
+            <Line data={timeSeriesData} />
+          </Box>
+          
+          {/* Bar chart - spans 2 columns when space allows */}
+          <Box sx={{
+            backgroundColor: 'background.paper',
+            p: 3,
+            borderRadius: 2,
+            boxShadow: 1,
+            minHeight: '400px',
+            gridColumn: { md: 'span 2' }
+          }}>
+            <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Authorized Users by Team</Typography>
+            <Bar data={organizationData} />
+          </Box>
         </Box>
-        
-        {/* Add the line chart box */}
-        <Box sx={{
-          backgroundColor: 'background.paper',
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 1,
-          width: '800px',
-          mt: 3
-        }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Releases over Time</Typography>
-          <Line data={timeSeriesData} />
-        </Box>
-        
-        {/* Add the bar chart box */}
-        <Box sx={{
-          backgroundColor: 'background.paper',
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 1,
-          width: '800px',
-          mt: 3
-        }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Authorized Users by Team</Typography>
-          <Bar data={organizationData} />
-        </Box>
-        
       </Box>
     </Box>
   );

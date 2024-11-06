@@ -67,7 +67,15 @@ export default function Settings() {
                 borderRadius: 1,
                 boxShadow: 1
             }}>
-                
+                <Typography 
+                    variant="body1" 
+                    sx={{ color: 'text.primary' }}
+                >
+                    SSO: Google, Okta, Azure<br />
+                    Notifications: SMTP, Slack, Mattermost<br />
+                    Approvals: Jira<br />
+                    Logs: 
+                </Typography>
             </Box>
         </div>
       </Box>
