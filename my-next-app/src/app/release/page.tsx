@@ -1,27 +1,14 @@
 'use client';
 
-import { Box, Typography, Breadcrumbs, Link, Modal, TextField, Select, MenuItem, FormControl, InputLabel, Button, Checkbox, FormControlLabel, FormGroup, Badge } from '@mui/material';
+import { Box, Typography, Breadcrumbs, Link, Modal, TextField, Select, MenuItem, FormControl, InputLabel, Button, Checkbox, FormGroup, Badge } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import SideMenu from '@/components/SideMenu';
 import { useState } from 'react';
 
-const locales = {
-  'en-US': require('date-fns/locale/en-US')
-};
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
+const localizer = momentLocalizer(moment);
 
 const Release = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
@@ -92,13 +79,18 @@ const Release = () => {
     },
   ];
 
-  // Add state to manage checkbox values
-  const [checkedAttendees, setCheckedAttendees] = useState(attendees.map(a => ({
-    ...a,
-    checked: false
-  })));
+  // Initialize checkedAttendees state separately
+  const [checkedAttendees, setCheckedAttendees] = useState(attendees);
 
   const handleEventClick = (event: any) => {
+    // Pre-prepare the attendees data
+    const updatedAttendees = attendees.map(a => ({
+      ...a,
+      checked: false
+    }));
+    
+    // Set both states at once
+    setCheckedAttendees(updatedAttendees);
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
@@ -200,6 +192,8 @@ const Release = () => {
               color: 'text.primary'
             }}
             onSelectEvent={handleEventClick}
+            views={['month', 'week', 'day', 'agenda']}
+            defaultView="month"
           />
         </Box>
 
@@ -207,12 +201,12 @@ const Release = () => {
           open={isModalOpen}
           onClose={handleCloseModal}
           aria-labelledby="event-modal-title"
-          sx={{
-            '& .MuiTypography-root': {
-              color: 'text.primary',
-            },
-            '& .MuiDialogContent-root': {
-              color: 'text.primary',
+          disablePortal
+          slotProps={{
+            backdrop: {
+              style: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }
             }
           }}
         >
