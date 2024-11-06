@@ -101,7 +101,7 @@ export default function Users() {
           <Button 
             variant="contained" 
             size="small"
-            sx={{ backgroundColor: 'black', '&:hover': { backgroundColor: '#333' } }}
+            sx={{  '&:hover': { backgroundColor: '#333' } }}
             onClick={() => {
               console.log('Delete clicked for ID:', params.row.id);
             }}
@@ -194,7 +194,6 @@ export default function Users() {
                             console.log('Add User clicked');
                         }}
                         sx={{ 
-                            backgroundColor: 'black',
                             '&:hover': { backgroundColor: '#333' }
                         }}
                     >

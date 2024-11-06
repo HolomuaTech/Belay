@@ -125,13 +125,13 @@ const Release = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        backgroundColor: '#f5f5f5'
+        backgroundColor: 'background.default'
       }}>
         <Typography 
           variant="h4" 
           sx={{ 
             mb: 2,
-            color: 'black'
+            color: 'text.primary'
           }}
         >
           Release Management
@@ -181,7 +181,7 @@ const Release = () => {
             </Typography>
         </Box>
         <Box sx={{
-          backgroundColor: 'white',
+          backgroundColor: 'background.paper',
           p: 3,
           borderRadius: 2,
           boxShadow: 1,
@@ -189,7 +189,7 @@ const Release = () => {
           mt: 3,
           height: '600px'  // Added fixed height for the calendar
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Upcoming Releases</Typography>
+          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Upcoming Releases</Typography>
           <Calendar
             localizer={localizer}
             events={events}
@@ -197,7 +197,7 @@ const Release = () => {
             endAccessor="end"
             style={{ 
               height: '500px',
-              color: 'black'
+              color: 'text.primary'
             }}
             onSelectEvent={handleEventClick}
           />
@@ -209,10 +209,10 @@ const Release = () => {
           aria-labelledby="event-modal-title"
           sx={{
             '& .MuiTypography-root': {
-              color: 'black',
+              color: 'text.primary',
             },
             '& .MuiDialogContent-root': {
-              color: 'black',
+              color: 'text.primary',
             }
           }}
         >

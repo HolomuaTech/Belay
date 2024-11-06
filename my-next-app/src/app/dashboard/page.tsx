@@ -46,15 +46,22 @@ const Dashboard = () => {
     ],
   };
 
-  // Add time series data
+  // Updated time series data with two datasets
   const timeSeriesData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
     datasets: [
       {
-        label: 'Number of Releases',
+        label: 'Actual Releases',
         data: [12, 19, 15, 16, 8, 22],
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1,
+      },
+      {
+        label: 'Planned Releases',
+        data: [15, 18, 14, 20, 12, 25],
+        borderColor: 'rgb(255, 99, 132)',
+        tension: 0.1,
+        borderDash: [5, 5], // This creates a dashed line for planned releases
       },
     ],
   };
@@ -84,13 +91,13 @@ const Dashboard = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        backgroundColor: '#f5f5f5'
+        backgroundColor: 'background.default'
       }}>
         <Typography 
           variant="h4" 
           sx={{ 
             mb: 2,
-            color: 'black'
+            color: 'text.primary'
           }}
         >
           Enterprise Dashboard
@@ -113,40 +120,40 @@ const Dashboard = () => {
         
         {/* Add the chart box */}
         <Box sx={{
-          backgroundColor: 'white',
+          backgroundColor: 'background.paper',
           p: 3,
           borderRadius: 2,
           boxShadow: 1,
           width: '400px',
           mt: 3
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Enterprise Wide Vulnerabilities</Typography>
+          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Enterprise Wide Vulnerabilities</Typography>
           <Pie data={chartData} />
         </Box>
         
         {/* Add the line chart box */}
         <Box sx={{
-          backgroundColor: 'white',
+          backgroundColor: 'background.paper',
           p: 3,
           borderRadius: 2,
           boxShadow: 1,
           width: '800px',
           mt: 3
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Releases over Time</Typography>
+          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Releases over Time</Typography>
           <Line data={timeSeriesData} />
         </Box>
         
         {/* Add the bar chart box */}
         <Box sx={{
-          backgroundColor: 'white',
+          backgroundColor: 'background.paper',
           p: 3,
           borderRadius: 2,
           boxShadow: 1,
           width: '800px',
           mt: 3
         }}>
-          <Typography variant="h6" sx={{ mb: 2, color: 'black' }}>Authorized Users by Team</Typography>
+          <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>Authorized Users by Team</Typography>
           <Bar data={organizationData} />
         </Box>
         
