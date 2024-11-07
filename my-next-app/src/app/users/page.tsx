@@ -6,7 +6,7 @@ import { useRef, useState, forwardRef } from 'react';
 
 
 
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 
 const TooltipButton = forwardRef<HTMLButtonElement, any>((props, ref) => (
   <Button {...props} ref={ref} />
@@ -71,7 +71,7 @@ export default function Users() {
       field: 'authorize', 
       headerName: 'Authorize', 
       width: 160,
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams) => (
         <FormControlLabel
           control={
             <AuthSwitch 
@@ -96,7 +96,7 @@ export default function Users() {
       field: 'action', 
       headerName: 'Action', 
       width: 130,
-      renderCell: (params) => (
+      renderCell: (params: GridRenderCellParams) => (
         <Tooltip title="Delete this user">
           <Button 
             variant="contained" 
@@ -112,6 +112,36 @@ export default function Users() {
       ),
     }
   ];
+
+  // Modify the columns for the second DataGrid to make authorize read-only
+  const columnsWithoutDelete = columns.slice(0, -1).map(col => {
+    if (col.field === 'authorize') {
+      return {
+        ...col,
+        renderCell: (params: GridRenderCellParams) => (
+          <FormControlLabel
+            control={
+              <AuthSwitch 
+                checked={params.row.deploy === 'Authorized'}
+                disabled={true}  // Make switch read-only
+              />
+            }
+            label={params.row.deploy === 'Authorized' ? 'On' : 'Off'}
+            labelPlacement="end"
+            sx={{
+              ml: 0,
+              '& .MuiFormControlLabel-label': {
+                color: params.row.deploy === 'Authorized' ? 'success.main' : 'error.main',
+                fontWeight: 'bold',
+                fontSize: '0.875rem'
+              }
+            }}
+          />
+        ),
+      };
+    }
+    return col;
+  });
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -178,12 +208,13 @@ export default function Users() {
                     variant="body1" 
                     sx={{ color: 'text.primary' }}
                 >
-                    Add, Remove or Change users ability to deploy to production.
+                    If SSO is not enabled, this will allow you to Add, Remove or Change users ability to deploy to production.
                 </Typography>
             </Box>
             <Box sx={{ 
                 backgroundColor: 'background.paper',
                 p: 2,
+                mb: 2,
                 borderRadius: 1,
                 boxShadow: 1
             }}>
@@ -203,6 +234,71 @@ export default function Users() {
                 <DataGrid
                     rows={rowData}
                     columns={columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 10 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    disableRowSelectionOnClick
+                    sx={{ 
+                        backgroundColor: 'background.paper',
+                        '& .MuiDataGrid-cell': {
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-columnHeaders': {
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-footerContainer': {
+                            backgroundColor: 'background.paper',
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-virtualScroller': {
+                            backgroundColor: 'background.paper'
+                        },
+                        '& .MuiTablePagination-root': {
+                            color: 'text.primary'
+                        },
+                        '& .MuiDataGrid-row:hover': {
+                            backgroundColor: 'action.hover'
+                        },
+                        border: 'none'
+                    }}
+                />
+            </Box>
+        <Box 
+            sx={{ 
+                backgroundColor: 'background.paper',
+                p: 2,
+                mb: 2,
+                borderRadius: 1,
+                boxShadow: 1
+            }}
+        >
+            <Typography 
+                variant="h6" 
+                sx={{ color: 'text.primary', mb: 2 }}
+            >
+                Description:
+            </Typography>
+            <Typography 
+                variant="body1" 
+                sx={{ color: 'text.primary' }}
+            >
+                If SSO is enabled, this will just display the list of users ability to deploy to production.
+            </Typography>
+        </Box>
+        <Box sx={{ 
+            backgroundColor: 'background.paper',
+                
+                p: 2,
+                borderRadius: 1,
+                boxShadow: 1
+            }}>
+                <DataGrid
+                    rows={rowData}
+                    columns={columnsWithoutDelete}
                     initialState={{
                         pagination: {
                             paginationModel: { page: 0, pageSize: 10 },

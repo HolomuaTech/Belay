@@ -2,7 +2,7 @@
 
 import { Box, Typography, Breadcrumbs, Link, Modal, TextField, Select, MenuItem, FormControl, InputLabel, Button, Checkbox, FormGroup, Badge } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, momentLocalizer, View } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import SideMenu from '@/components/SideMenu';
@@ -13,6 +13,33 @@ const localizer = momentLocalizer(moment);
 const Release = () => {
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [view, setView] = useState<View>('month');
+  const [date, setDate] = useState(new Date());
+
+  const CustomToolbar = (toolbar: any) => {
+    return (
+      <div className="rbc-toolbar" style={{ zIndex: 1000 }}>
+        <span className="rbc-btn-group">
+          <button type="button" onClick={() => toolbar.onNavigate('PREV')}>Back</button>
+          <button type="button" onClick={() => toolbar.onNavigate('TODAY')}>Today</button>
+          <button type="button" onClick={() => toolbar.onNavigate('NEXT')}>Next</button>
+        </span>
+        <span className="rbc-toolbar-label">{toolbar.label}</span>
+        <span className="rbc-btn-group">
+          {toolbar.views.map((view: string) => (
+            <button
+              key={view}
+              type="button"
+              onClick={() => toolbar.onView(view)}
+              className={view === toolbar.view ? 'rbc-active' : ''}
+            >
+              {view}
+            </button>
+          ))}
+        </span>
+      </div>
+    );
+  };
 
   // Sample events
   const events = [
@@ -193,7 +220,19 @@ const Release = () => {
             }}
             onSelectEvent={handleEventClick}
             views={['month', 'week', 'day', 'agenda']}
-            defaultView="month"
+            view={view}
+            date={date}
+            onNavigate={(newDate) => {
+              setDate(newDate);
+            }}
+            onView={(newView) => {
+              setView(newView);
+            }}
+            selectable={true}
+            popup={true}
+            components={{
+              toolbar: CustomToolbar
+            }}
           />
         </Box>
 
@@ -201,14 +240,6 @@ const Release = () => {
           open={isModalOpen}
           onClose={handleCloseModal}
           aria-labelledby="event-modal-title"
-          disablePortal
-          slotProps={{
-            backdrop: {
-              style: {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              }
-            }
-          }}
         >
           <Box sx={{
             position: 'absolute',
@@ -220,6 +251,7 @@ const Release = () => {
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
+            backgroundColor: 'background.paper',
           }}>
             <Typography id="event-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
               {selectedEvent?.title}
