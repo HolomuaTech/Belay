@@ -1,0 +1,7 @@
+imageTag: supermongol/belay-ui
+imagePublish:
+  enabled: false
+codeScan:
+  # coverageFile: coverage/cobertura-coverage.xml
+deploy:
+  gatecheckConfigFilename: .gatecheck.yml
