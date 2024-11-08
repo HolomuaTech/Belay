@@ -149,8 +149,8 @@ const SideMenu = () => {
         px: 1
       }}>
         <Image
-          src="/images/Guardian.png"
-          alt="Guardian Logo"
+          src="/images/belay_logo4.png"
+          alt="Belay Logo"
           width={open ? 150 : 40}
           height={90}
           style={{ objectFit: 'contain' }}
